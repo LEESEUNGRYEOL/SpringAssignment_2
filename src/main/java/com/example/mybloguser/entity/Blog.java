@@ -30,17 +30,15 @@ public class Blog extends Timestamped{
     private String contents;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private Long userId;
+
     // 생성자.
-    public Blog (BlogRequestDto requestDto)
+    public Blog (BlogRequestDto requestDto, Long userId)
     {
-        this.author = requestDto.getAuthor();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
         this.title = requestDto.getTitle();
     }
     public void update (BlogRequestDto requestDto)

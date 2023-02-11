@@ -9,5 +9,6 @@ import org.intellij.lang.annotations.Pattern;
 @Getter
 @Setter
 public class SignupRequestDto {
-
+    private String username;
+    private String password;
 }

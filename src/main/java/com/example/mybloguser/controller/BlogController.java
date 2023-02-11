@@ -7,6 +7,8 @@ import com.example.mybloguser.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -23,10 +25,10 @@ public class BlogController {
         return blogService.getBlogs();
     }
 
-    // 요구사항2. 게시글 작성 API (PST)
+    // 요구사항2. 게시글 작성 API (POST)
     @PostMapping("/blogs")
-    public BlogResponseDto createBlog(@RequestBody BlogRequestDto requestDto) {
-        return blogService.createBlog(requestDto);
+    public BlogResponseDto createBlog(@RequestBody BlogRequestDto blogrequestDto, HttpServletRequest request) {
+        return blogService.createBlog(blogrequestDto,request);
     }
 
     // 요구사항3. 선택한 게시글 조회 API (GET)
@@ -38,13 +40,13 @@ public class BlogController {
 
     // 요구사항4. 선택한 게시글 수정 API (PUT)
     @PutMapping("/blogs/{id}")
-    public BlogResponseDto updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
-        return blogService.updateBlog(id, requestDto);
+    public BlogResponseDto updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto blogRequestDto,HttpServletRequest request) {
+        return blogService.updateBlog(id, blogRequestDto,request);
     }
 
     // 요구사항5. 선택한 게시글 삭제 API (DEL)
     @DeleteMapping("/blogs/{id}")
-    public SendMessageDto deleteBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
-        return blogService.deleteBlog(id,requestDto);
+    public SendMessageDto deleteBlog(@PathVariable Long id,HttpServletRequest request) {
+        return blogService.deleteBlog(id,request);
     }
 }

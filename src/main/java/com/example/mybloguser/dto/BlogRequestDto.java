@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BlogRequestDto {
-    private String contents;
     private String title;
+    private String contents;
+
 }
