@@ -2,12 +2,11 @@ package com.example.mybloguser.controller;
 
 import com.example.mybloguser.dto.BlogRequestDto;
 import com.example.mybloguser.dto.BlogResponseDto;
-import com.example.mybloguser.dto.SendMessageDto;
+import com.example.mybloguser.dto.MessageResponseDto;
 import com.example.mybloguser.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -40,13 +39,13 @@ public class BlogController {
 
     // 요구사항4. 선택한 게시글 수정 API (PUT)
     @PutMapping("/blogs/{id}")
-    public BlogResponseDto updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto blogRequestDto,HttpServletRequest request) {
+    public BlogResponseDto updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto blogRequestDto, HttpServletRequest request) {
         return blogService.updateBlog(id, blogRequestDto,request);
     }
 
     // 요구사항5. 선택한 게시글 삭제 API (DEL)
     @DeleteMapping("/blogs/{id}")
-    public SendMessageDto deleteBlog(@PathVariable Long id,HttpServletRequest request) {
+    public MessageResponseDto deleteBlog(@PathVariable Long id, HttpServletRequest request) {
         return blogService.deleteBlog(id,request);
     }
 }

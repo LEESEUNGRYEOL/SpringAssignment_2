@@ -22,9 +22,8 @@ public class Blog extends Timestamped{
     // 보통 AUTO, IDENTITY,SEQUENCE, TABLE 방식들이 있다.
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private User user;
+    @Column (nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String contents;
@@ -32,18 +31,18 @@ public class Blog extends Timestamped{
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private Long userId;
-
     // 생성자.
-    public Blog (BlogRequestDto requestDto, Long userId)
+    public Blog (BlogRequestDto blogRequestDto, String username)
     {
-        this.contents = requestDto.getContents();
-        this.title = requestDto.getTitle();
+        this.contents = blogRequestDto.getContents();
+        this.title = blogRequestDto.getTitle();
+        this.username = username;
     }
-    public void update (BlogRequestDto requestDto)
+    public void update (BlogRequestDto blogRequestDto,String username)
     {
-        this.contents = requestDto.getContents();
+        this.contents = blogRequestDto.getContents();
+        this.title = blogRequestDto.getTitle();
+        this.username = username;
     }
 
 }

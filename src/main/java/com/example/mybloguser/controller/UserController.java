@@ -6,9 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -17,14 +18,14 @@ public class UserController {
 
     // 요구사항1. 회원 가입
     @PostMapping("/signup")
-    public SignupResponseDto signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return userService.signup(signupRequestDto);
     }
 
 
     // 요구사항2. 로그인
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto, response);
     }
 }

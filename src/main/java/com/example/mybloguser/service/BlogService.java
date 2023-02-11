@@ -3,7 +3,7 @@ package com.example.mybloguser.service;
 
 import com.example.mybloguser.dto.BlogRequestDto;
 import com.example.mybloguser.dto.BlogResponseDto;
-import com.example.mybloguser.dto.SendMessageDto;
+import com.example.mybloguser.dto.MessageResponseDto;
 import com.example.mybloguser.entity.Blog;
 import com.example.mybloguser.entity.User;
 import com.example.mybloguser.jwt.JwtUtil;
@@ -11,6 +11,7 @@ import com.example.mybloguser.repository.BlogRepository;
 import com.example.mybloguser.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +68,7 @@ public class BlogService {
             );
 
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
-            Blog blog = blogRepository.saveAndFlush(new Blog(blogrequestDto, user.getId()));
+            Blog blog = blogRepository.saveAndFlush(new Blog(blogrequestDto, user.getUsername()));
 
             return new BlogResponseDto(blog);
         } else {
@@ -108,11 +109,11 @@ public class BlogService {
                     () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
             );
 
-            Blog blog = blogRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
+            Blog blog = blogRepository.findByIdAndUsername(id, user.getUsername()).orElseThrow(
                     () -> new NullPointerException("해당 상품은 존재하지 않습니다.")
             );
 
-            blog.update(blogRequestDto);
+            blog.update(blogRequestDto,user.getUsername());
             return new BlogResponseDto(blog);
         } else {
             return null;
@@ -121,12 +122,11 @@ public class BlogService {
 
     // 요구사항5. 선택한 게시글 삭제
     @Transactional
-    public SendMessageDto deleteBlog(Long id,  HttpServletRequest request) {
+    public MessageResponseDto deleteBlog(Long id, HttpServletRequest request) {
 
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request);
         Claims claims;
-        SendMessageDto sendMessageDto = new SendMessageDto();
         // 토큰이 있는 경우에만 관심상품 최저가 업데이트 가능
         if (token != null) {
             // Token 검증
@@ -142,15 +142,14 @@ public class BlogService {
                     () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
             );
 
-            Blog blog = blogRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
+            Blog blog = blogRepository.findByIdAndUsername(id, user.getUsername()).orElseThrow(
                     () -> new NullPointerException("해당 상품은 존재하지 않습니다.")
             );
 
             blogRepository.deleteById(id);
-            sendMessageDto.sendMessage("삭제완료",200);
-            return sendMessageDto;
+            return new MessageResponseDto(true, HttpStatus.OK.value());
         } else {
-            return null;
+            return new MessageResponseDto(false, HttpStatus.NOT_FOUND.value());
         }
 
 

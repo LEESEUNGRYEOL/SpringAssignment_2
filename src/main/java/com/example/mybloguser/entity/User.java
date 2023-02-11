@@ -12,15 +12,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class User {
-
-    // 1. pk 설정.
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    // 2.
-    @OneToMany(mappedBy = "user")
-    private List<Blog> BlogList = new ArrayList<>();
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -37,5 +31,4 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
 }

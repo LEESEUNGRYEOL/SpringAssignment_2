@@ -23,7 +23,7 @@ public class BlogResponseDto {
         this.id = blog.getId();
         this.title = blog.getTitle();
         this.contents = blog.getContents();
-        this.username = blog.getUser().getUsername();
+        this.username = blog.getUsername();
         this.createdat = blog.getCreatedAt();
         this.modifiedat = blog.getModifiedAt();
     }
