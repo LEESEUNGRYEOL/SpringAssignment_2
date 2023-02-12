@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BlogRequestDto {
     private String title;
-    private String contents;
+    private String content;
 
 }

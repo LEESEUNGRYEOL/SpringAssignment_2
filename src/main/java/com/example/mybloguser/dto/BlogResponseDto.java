@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class BlogResponseDto {
     private Long id;
     private String title;
-    private String contents;
+    private String content;
     private String username;
     private LocalDateTime createdat;
     private LocalDateTime modifiedat;
@@ -22,8 +22,8 @@ public class BlogResponseDto {
     public BlogResponseDto(Blog blog) {
         this.id = blog.getId();
         this.title = blog.getTitle();
-        this.contents = blog.getContents();
-        this.username = blog.getUsername();
+        this.content = blog.getContent();
+        this.username = blog.getUser().getUsername();
         this.createdat = blog.getCreatedAt();
         this.modifiedat = blog.getModifiedAt();
     }

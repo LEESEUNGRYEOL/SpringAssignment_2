@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -67,7 +68,7 @@ public class BlogService {
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
             Blog blog = blogRepository.saveAndFlush(Blog.builder()
                     .blogRequestDto(blogrequestDto)
-                    .username(user.getUsername())
+                    .user(user)
                     .build());
 
             return ResponseEntity.ok()
@@ -110,18 +111,20 @@ public class BlogService {
             }
 
             // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
+            Optional <User> user = userRepository.findByUsername(claims.getSubject());
+            if (user.isEmpty()) {
+                return responseException("사용자가 존재하지 않습니다.");
+            }
 
-            Blog blog = blogRepository.findByIdAndUsername(id, user.getUsername()).orElseThrow(
-                    () -> new NullPointerException("본인이 작성한 게시글이 아닙니다..")
-            );
+            Optional<Blog> blog = blogRepository.findByIdAndUser(id, user.get());
+            if (blog.isEmpty()) { // 일치하는 게시물이 없다면
+                return responseException("본인이 작성한 게시글만 수정이 가능합니다.");
+            }
 
-            blog.update(blogRequestDto, user.getUsername());
+            blog.get().update(blogRequestDto, user.get());
 
             return ResponseEntity.ok()
-                    .body(new BlogResponseDto(blog));
+                    .body(new BlogResponseDto(blog.get()));
         } else {
             return ResponseEntity.badRequest()
                     .body(MessageResponseDto.builder()
@@ -153,7 +156,7 @@ public class BlogService {
                     () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
             );
 
-            Blog blog = blogRepository.findByIdAndUsername(id, user.getUsername()).orElseThrow(
+            Blog blog = blogRepository.findByIdAndUser(id, user).orElseThrow(
                     () -> new NullPointerException("본인이 작성한 게시글이 아닙니다.")
             );
 
@@ -172,6 +175,15 @@ public class BlogService {
                             .build());
         }
 
+    }
+
+    private static ResponseEntity<Object> responseException(String message) {
+        return ResponseEntity   // ResponseEntity 를 반환
+                .badRequest()   // status : bad request
+                .body(MessageResponseDto.builder()  // body : SuccessResponseDto
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .msg(message)
+                        .build());
     }
 
 }
