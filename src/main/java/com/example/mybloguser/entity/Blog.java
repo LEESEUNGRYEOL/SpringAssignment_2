@@ -2,6 +2,7 @@ package com.example.mybloguser.entity;
 
 
 import com.example.mybloguser.dto.BlogRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +33,7 @@ public class Blog extends Timestamped{
     private String title;
 
     // 생성자.
+    @Builder
     public Blog (BlogRequestDto blogRequestDto, String username)
     {
         this.contents = blogRequestDto.getContents();

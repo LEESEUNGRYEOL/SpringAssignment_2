@@ -1,5 +1,6 @@
 package com.example.mybloguser.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.users.GenericRole;
@@ -26,6 +27,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+    @Builder
     public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;

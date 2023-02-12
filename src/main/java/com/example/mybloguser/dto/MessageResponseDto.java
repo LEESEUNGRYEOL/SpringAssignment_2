@@ -1,14 +1,16 @@
 package com.example.mybloguser.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class MessageResponseDto {
-    private Boolean success;
+    private String msg;
     private int statusCode;
-    public MessageResponseDto(Boolean success, int statusCode)
+    @Builder
+    public MessageResponseDto(String msg, int statusCode)
     {
-        this.success = success;
+        this.msg = msg;
         this.statusCode = statusCode;
     }
 }

@@ -3,6 +3,8 @@ package com.example.mybloguser.controller;
 import com.example.mybloguser.dto.*;
 import com.example.mybloguser.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,14 +20,14 @@ public class UserController {
 
     // 요구사항1. 회원 가입
     @PostMapping("/signup")
-    public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        return userService.signup(signupRequestDto);
+    public ResponseEntity<MessageResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+        return userService.signup(signupRequestDto,bindingResult);
     }
 
 
     // 요구사항2. 로그인
     @PostMapping("/login")
-    public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        return userService.login(loginRequestDto, response);
+    public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        return userService.login(loginRequestDto);
     }
 }
