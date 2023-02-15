@@ -1,6 +1,8 @@
 # SpringAssignment_2
 
 스프링 2주차 개인과제 (LEVEL2)
+## ERD
+<img width="735" alt="스크린샷 2023-02-12 오후 9 54 50" src="https://user-images.githubusercontent.com/96409909/219068592-74fad1b7-a3ec-4270-a985-aa05307f1bb8.png">
 
 ## 요구사항
 
